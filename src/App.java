@@ -5,13 +5,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class App {
 
     static ArrayList<Todo> todos = new ArrayList<>();
     static String[] arguments;
-    static Gson gson = new Gson();
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     static File todosFile = new File("todos.json");
     static Path pathToFile = todosFile.toPath();
     static TypeToken<ArrayList<Todo>> collectionType = new TypeToken<ArrayList<Todo>>(){};
@@ -26,8 +27,6 @@ public class App {
 
         String command = args[0];
         arguments = args;
-
-        System.out.println("");
         
         switch (command) {
             case "add":
@@ -67,7 +66,12 @@ public class App {
     }
 
     private static void listTodos() {
-        
+        if (!todoFileAlreadyExist()) {
+            System.out.println("No todos are created. Consider adding new todo.");
+            System.exit(64);
+        }
+        readTodosFromFile();
+        System.out.println(gson.toJson(todos));
     }
 
     private static void markTodoDone() {
@@ -98,8 +102,12 @@ public class App {
 
         todos.add(new Todo(getTodoId(), arguments[1]));
 
-        addTodoToFile(getTodoId());
+        addTodoToFile(getIdOfLatestTodo());
         
+    }
+
+    private static String getIdOfLatestTodo() {
+        return ""+(todos.size() - 1);
     }
 
     private static void addTodoToFile(String todoId) {
@@ -116,6 +124,9 @@ public class App {
             catch (IOException e) {
                 System.out.println("Failed to read todos.");
             }
+        }
+        else {
+            // do nothing since this function is called just to update the todos with todos from file IF they exist
         }
     }
 
@@ -138,7 +149,6 @@ public class App {
 
         try {
             Files.writeString(pathToFile, gson.toJson(todos));
-            System.out.println("Todos Updated");
         } catch (IOException e) {
             System.out.println("App failed to write todos to file.");
         }
