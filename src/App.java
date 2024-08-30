@@ -33,6 +33,9 @@ public class App {
             case "add":
                 addTodo();
                 break;
+            case "list":
+                listTodos();
+                break;
             case "update":
                 updateTodo();
                 break;
@@ -63,6 +66,10 @@ public class App {
 
     }
 
+    private static void listTodos() {
+        
+    }
+
     private static void markTodoDone() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'markTodoDone'");
@@ -87,16 +94,21 @@ public class App {
 
         checkIfArgumentsForCommandAreSupplied();
 
-        readTodosFromFile();
+        readTodosFromFile(); // if todos file already exists then the todos array will be populated before appending new todo, otherwise a new file will be created.
 
         todos.add(new Todo(getTodoId(), arguments[1]));
 
-        writeTodosToFile();
+        addTodoToFile(getTodoId());
         
     }
 
+    private static void addTodoToFile(String todoId) {
+        writeTodosToFile();
+        System.out.println("Task Added Successfully (" + todoId + ")");
+    }
+
     private static void readTodosFromFile() {
-        if (Files.exists(pathToFile)) {
+        if (todoFileAlreadyExist()) {
 
             try {
                 todos = gson.fromJson(Files.readString(pathToFile), collectionType);
@@ -105,6 +117,10 @@ public class App {
                 System.out.println("Failed to read todos.");
             }
         }
+    }
+
+    private static boolean todoFileAlreadyExist() {
+        return Files.exists(pathToFile);
     }
 
     private static String getTodoId() {
@@ -122,6 +138,7 @@ public class App {
 
         try {
             Files.writeString(pathToFile, gson.toJson(todos));
+            System.out.println("Todos Updated");
         } catch (IOException e) {
             System.out.println("App failed to write todos to file.");
         }
