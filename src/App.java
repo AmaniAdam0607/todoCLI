@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -66,12 +67,20 @@ public class App {
     }
 
     private static void listTodos() {
+        checkIfTodosExists();
+        readTodosFromFile();
+        prettyPrintTodos();
+    }
+
+    private static void prettyPrintTodos() {
+        System.out.println(gson.toJson(todos));
+    }
+
+    private static void checkIfTodosExists() {
         if (!todoFileAlreadyExist()) {
             System.out.println("No todos are created. Consider adding new todo.");
             System.exit(64);
         }
-        readTodosFromFile();
-        System.out.println(gson.toJson(todos));
     }
 
     private static void markTodoDone() {
@@ -85,18 +94,27 @@ public class App {
     }
 
     private static void deleteTodo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTodo'");
+        checkIfTodosExists();
+        checkIfArgumentsForCommandAreSupplied(2);
+        readTodosFromFile();
+
+        if (findTodoWithId(arguments[1]).isPresent()) {
+            todos.remove(findTodoWithId(arguments[1]).get());
+        }
+
+        //prettyPrintTodos();
+
+        writeTodosToFile();
     }
 
     private static void updateTodo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateTodo'");
+        //
+        
     }
 
     private static void addTodo() {
 
-        checkIfArgumentsForCommandAreSupplied();
+        checkIfArgumentsForCommandAreSupplied(2);
 
         readTodosFromFile(); // if todos file already exists then the todos array will be populated before appending new todo, otherwise a new file will be created.
 
@@ -104,6 +122,11 @@ public class App {
 
         addTodoToFile(getIdOfLatestTodo());
         
+    }
+
+    private static Optional<Todo> findTodoWithId(String id) {
+        Optional<Todo> optTodo =  todos.stream().filter(todo -> todo.id.equals(id)).findAny();
+        return optTodo;
     }
 
     private static String getIdOfLatestTodo() {
@@ -138,8 +161,8 @@ public class App {
         return "" + ( 1 + todos.size());
     }
 
-    private static void checkIfArgumentsForCommandAreSupplied() {
-        if (arguments.length == 1) {
+    private static void checkIfArgumentsForCommandAreSupplied(int numberOfRequiredArguments) {
+        if (arguments.length != numberOfRequiredArguments) {
             System.out.println("Incomplete Command | Consider reading usage found by using  [java App -help] command");
             System.exit(64);
         }

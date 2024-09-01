@@ -17,8 +17,11 @@ public class Todo {
         updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMMM-yyyy h:m:s a"));
     }
 
-    public void updateTodo(String description) {
-        //
+
+    public Todo updateTodo(String description) {
+        this.description = description;
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMMM-yyyy h:m:s a"));
+        return this;
     }
 
     public String toString() {
