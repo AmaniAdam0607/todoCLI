@@ -77,7 +77,7 @@ public class App {
     }
 
     private static void checkIfTodosExists() {
-        if (!todoFileAlreadyExist()) {
+        if (!todoFileAlreadyExist() || todos.isEmpty()) {
             System.out.println("No todos are created. Consider adding new todo.");
             System.exit(64);
         }
@@ -102,14 +102,21 @@ public class App {
             todos.remove(findTodoWithId(arguments[1]).get());
         }
 
-        //prettyPrintTodos();
-
         writeTodosToFile();
     }
 
     private static void updateTodo() {
-        //
-        
+        checkIfTodosExists();
+        checkIfArgumentsForCommandAreSupplied(3);
+        readTodosFromFile();
+
+        todos.forEach(todo -> {
+            if (todo.id.equals(arguments[1])) {
+                todo.setDescription(arguments[2]);
+            }
+        });
+
+        writeTodosToFile();
     }
 
     private static void addTodo() {

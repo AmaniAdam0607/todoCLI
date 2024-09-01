@@ -18,11 +18,7 @@ public class Todo {
     }
 
 
-    public Todo updateTodo(String description) {
-        this.description = description;
-        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMMM-yyyy h:m:s a"));
-        return this;
-    }
+    
 
     public String toString() {
         return "ID" + "()" + "\nDesc: " + description + "\nStatus: " + status + "\nCreated at: " + createdAt + "\nUpdated at: ";
@@ -56,6 +52,42 @@ public class Todo {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
+
+    public void setDescription(String description) {
+        this.description = description;
+        setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMMM-yyyy h:m:s a")));
+    }
+
+
+
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+
+
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }
