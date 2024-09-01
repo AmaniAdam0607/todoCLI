@@ -49,19 +49,19 @@ public class App {
                 markTodoDone();
                 break;
             case "-help":
-                System.out.print("Commands are \n1. add <todo-description> eg. add \"Buy groceries\"");
-                System.out.print("\n2. delete <todo-id> eg. \"delete 1\"");
-                System.out.print("\n3. update <todo-id> <todo-description> eg. update 1 \"Buy groceries and cook dinner\"");
-                System.out.print("\n4. mark-in-progress <todo-id> eg. mark-in-progress 1");
-                System.out.print("\n5. mark-done <todo-id>");
-                System.out.print("\n6. list (this shows all todos)");
+                System.out.print("Commands are \n1. add <todo-description> eg. add \"Buy groceries\".");
+                System.out.print("\n2. delete <todo-id> eg. \"delete 1\".");
+                System.out.print("\n3. update <todo-id> <todo-description> eg. update 1 \"Buy groceries and cook dinner\".");
+                System.out.print("\n4. mark-in-progress <todo-id> eg. mark-in-progress 1.");
+                System.out.print("\n5. mark-done <todo-id>.");
+                System.out.print("\n6. list (this shows all todos).");
                 System.out.print("\n7. list done (this shows all todos that are done.)");
                 System.out.print("\n8. list in-progress (this shows all todos that are in progress.)");
                 System.out.print("\n9. list todo (this shows all todos that are in todo state.)");
                 System.out.print("\n                            Made with ❤ by Amani Adam.");
                 break;
             default:
-                System.out.println("Unrecognized Command");
+                System.out.println("Unrecognized Command: " + "\"" + command + "\" Use -help to see usage.");
                 break;
         }
 
@@ -147,7 +147,7 @@ public class App {
 
     private static void markTodoDone() {
         checkIfTodosExists();
-        checkIfArgumentsForCommandAreSupplied(2);
+        checkIfArgumentsForCommandAreSupplied(2, "mark-done");
         readTodosFromFile();
 
         todos.forEach(todo -> {
@@ -161,7 +161,7 @@ public class App {
 
     private static void markTodoInProgress() {
         checkIfTodosExists();
-        checkIfArgumentsForCommandAreSupplied(2);
+        checkIfArgumentsForCommandAreSupplied(2, "mark-in-progress");
         readTodosFromFile();
 
         todos.forEach(todo -> {
@@ -175,7 +175,7 @@ public class App {
 
     private static void deleteTodo() {
         checkIfTodosExists();
-        checkIfArgumentsForCommandAreSupplied(2);
+        checkIfArgumentsForCommandAreSupplied(2, "delete");
         readTodosFromFile();
 
         if (findTodoWithId(arguments[1]).isPresent()) {
@@ -187,7 +187,7 @@ public class App {
 
     private static void updateTodo() {
         checkIfTodosExists();
-        checkIfArgumentsForCommandAreSupplied(3);
+        checkIfArgumentsForCommandAreSupplied(3, "update");
         readTodosFromFile();
 
         todos.forEach(todo -> {
@@ -201,7 +201,7 @@ public class App {
 
     private static void addTodo() {
 
-        checkIfArgumentsForCommandAreSupplied(2);
+        checkIfArgumentsForCommandAreSupplied(2, "add");
 
         readTodosFromFile(); // if todos file already exists then the todos array will be populated before appending new todo, otherwise a new file will be created.
 
@@ -248,9 +248,9 @@ public class App {
         return "" + ( 1 + todos.size());
     }
 
-    private static void checkIfArgumentsForCommandAreSupplied(int numberOfRequiredArguments) {
+    private static void checkIfArgumentsForCommandAreSupplied(int numberOfRequiredArguments, String command) {
         if (arguments.length != numberOfRequiredArguments) {
-            System.out.println("Incomplete Command | Consider reading usage found by using  [java App -help] command");
+            System.out.println("Invalid arguments to the " + command + " command. Use -help command to see usage.");
             System.exit(64);
         }
     }
