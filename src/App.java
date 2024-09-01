@@ -77,9 +77,16 @@ public class App {
     }
 
     private static void checkIfTodosExists() {
-        if (!todoFileAlreadyExist() || todos.isEmpty()) {
+        if (!todoFileAlreadyExist()) {
             System.out.println("No todos are created. Consider adding new todo.");
             System.exit(64);
+        }
+        else {
+            readTodosFromFile();
+            if (todos.isEmpty()) {
+                System.out.println("Empty todos. Consider adding new todo.");
+                System.exit(64);
+            }
         }
     }
 
