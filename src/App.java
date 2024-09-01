@@ -55,8 +55,9 @@ public class App {
                 System.out.print("\n4. mark-in-progress <todo-id> eg. mark-in-progress 1");
                 System.out.print("\n5. mark-done <todo-id>");
                 System.out.print("\n6. list (this shows all todos)");
-                System.out.print("\n7. list done (this shows all todos that are done)");
-                System.out.print("\n8. list in-progress (this shows all todos that are in progress)");
+                System.out.print("\n7. list done (this shows all todos that are done.)");
+                System.out.print("\n8. list in-progress (this shows all todos that are in progress.)");
+                System.out.print("\n9. list todo (this shows all todos that are in todo state.)");
                 System.out.print("\n                            Made with ❤ by Amani Adam.");
                 break;
             default:
@@ -69,11 +70,65 @@ public class App {
     private static void listTodos() {
         checkIfTodosExists();
         readTodosFromFile();
-        prettyPrintTodos();
+
+        if (arguments.length == 2) { // well this command can have 1 or two params, its logical to hard check it without using the custom wrapper used for other commands
+            switch (arguments[1]) {
+                case "done":
+                    showDoneTodos();
+                    break;
+                case "todo":
+                    showTodos();
+                    break;
+                case "in-progress":
+                    showTodosInProgress();
+                    break;
+                default:
+                    System.out.println("Invalid arguments to the list command. Use -help command to see usage.");
+                    System.exit(64);
+                    break;
+            }
+        }
+        else if (arguments.length == 1) {
+            prettyPrintTodos(todos);
+        }
+        else {
+            System.out.println("Invalid arguments to the list command. Use -help command to see usage.");
+            System.exit(64);
+        }
     }
 
-    private static void prettyPrintTodos() {
-        System.out.println(gson.toJson(todos));
+    private static void showDoneTodos() {
+        showFilteredTodos(TodoProgress.DONE);
+    }
+
+    private static void showTodosInProgress() {
+        showFilteredTodos(TodoProgress.INPROGRESS);
+    }
+
+    private static void showTodos() {
+        showFilteredTodos(TodoProgress.TODO);
+    }
+
+    private static void showFilteredTodos(TodoProgress filter) {
+        ArrayList<Todo> todos_ = new ArrayList<>();
+
+        todos.forEach(todo -> {
+            if (todo.progress == filter) {
+                todos_.add(todo);
+            }
+        });
+
+        if (todos_.isEmpty()) {
+            System.out.println("No todo satisfy the condition given.");
+            System.exit(64);
+        }
+        else {
+            prettyPrintTodos(todos_);
+        }
+    }
+
+    private static void prettyPrintTodos(ArrayList<Todo> todosToShow) {
+        System.out.println(gson.toJson(todosToShow));
     }
 
     private static void checkIfTodosExists() {
@@ -91,13 +146,31 @@ public class App {
     }
 
     private static void markTodoDone() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'markTodoDone'");
+        checkIfTodosExists();
+        checkIfArgumentsForCommandAreSupplied(2);
+        readTodosFromFile();
+
+        todos.forEach(todo -> {
+            if (todo.id.equals(arguments[1])) {
+                todo.setDone();
+            }
+        });
+
+        writeTodosToFile();
     }
 
     private static void markTodoInProgress() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'markTodoInProgress'");
+        checkIfTodosExists();
+        checkIfArgumentsForCommandAreSupplied(2);
+        readTodosFromFile();
+
+        todos.forEach(todo -> {
+            if (todo.id.equals(arguments[1])) {
+                todo.setInProgress();
+            }
+        });
+
+        writeTodosToFile();
     }
 
     private static void deleteTodo() {

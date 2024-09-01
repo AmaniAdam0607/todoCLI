@@ -2,8 +2,29 @@
   {
     "id": "1",
     "description": "Study Mechanics: The Theoretical Minimum",
-    "status": true,
-    "createdAt": "2-September-2024 12:8:27 AM",
-    "updatedAt": "2-September-2024 12:9:57 AM"
+    "progress": "INPROGRESS",
+    "createdAt": "2-September-2024 12:19:42 AM",
+    "updatedAt": "2-September-2024 12:28:25 AM"
+  },
+  {
+    "id": "2",
+    "description": "Study Java",
+    "progress": "TODO",
+    "createdAt": "2-September-2024 12:51:1 AM",
+    "updatedAt": "2-September-2024 12:51:1 AM"
+  },
+  {
+    "id": "3",
+    "description": "Study Computer Science",
+    "progress": "DONE",
+    "createdAt": "2-September-2024 12:51:12 AM",
+    "updatedAt": "2-September-2024 12:52:35 AM"
+  },
+  {
+    "id": "4",
+    "description": "Study Elementary Survey",
+    "progress": "TODO",
+    "createdAt": "2-September-2024 12:51:29 AM",
+    "updatedAt": "2-September-2024 12:51:29 AM"
   }
 ]
