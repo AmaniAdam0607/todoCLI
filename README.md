@@ -12,6 +12,10 @@ javac -cp ..\lib\gson-2.11.0.jar App.java Todo.java TodoProgress.java
 java -cp ".;..\lib\gson-2.11.0.jar" App -help
 ```
 
-The above comand will list all possible commands for the cli.
+The above comand will list all possible commands for the cli, the idea is to use command as shown below in the src directory
+
+```
+java -cp ".;..\lib\gson-2.11.0.jar" App -help
+```
 
 The project uses [gson](https://github.com/google/gson) because java have no direct support for handling JSON, this is contrary to the project instructions which limit usages of libraries ( I assume the creator of the project description assumed solutions in python and javascript which have that capability )
