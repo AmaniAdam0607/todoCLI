@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 
 import com.google.gson.Gson;
@@ -207,22 +208,15 @@ public class App {
 
         todos.add(new Todo(getTodoId(), arguments[1]));
 
-        addTodoToFile(getIdOfLatestTodo());
+        writeTodosToFile();
+
+        System.out.println("Task Added Successfully (" + (todos.getLast().getId()) + ")");
         
     }
 
     private static Optional<Todo> findTodoWithId(String id) {
         Optional<Todo> optTodo =  todos.stream().filter(todo -> todo.id.equals(id)).findAny();
         return optTodo;
-    }
-
-    private static String getIdOfLatestTodo() {
-        return ""+(todos.size() - 1);
-    }
-
-    private static void addTodoToFile(String todoId) {
-        writeTodosToFile();
-        System.out.println("Task Added Successfully (" + todoId + ")");
     }
 
     private static void readTodosFromFile() {
@@ -245,7 +239,8 @@ public class App {
     }
 
     private static String getTodoId() {
-        return "" + ( 1 + todos.size());
+        Collections.sort(todos);
+        return "" + (Integer.parseInt(todos.getLast().getId()) + 1);
     }
 
     private static void checkIfArgumentsForCommandAreSupplied(int numberOfRequiredArguments, String command) {

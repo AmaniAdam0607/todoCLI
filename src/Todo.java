@@ -1,7 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Todo {
+public class Todo implements Comparable<Todo>{
 
     String id;
     String description;
@@ -66,5 +66,10 @@ public class Todo {
 
     public void update() {
         setUpdatedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("d-MMMM-yyyy h:m:s a")));
+    }
+
+    @Override
+    public int compareTo(Todo other) {
+        return Integer.compare(Integer.parseInt(this.id), Integer.parseInt(other.id));
     }
 }
